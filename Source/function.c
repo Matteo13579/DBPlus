@@ -117,7 +117,7 @@ InputBuffer* new_input_buffer() {
     return input_buffer;
 };
 
-void print_prompt() { printf("db > "); }
+void print_prompt() { printf("DBPlus > "); }
 
 void print_row(Row * row) {
     printf("(%d, %s, %s)\n", row->id, row->username, row->email);
