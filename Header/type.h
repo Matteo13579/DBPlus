@@ -6,6 +6,7 @@
 #define TYPE_H
 #include <errno.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,6 +42,12 @@ typedef struct {
     uint32_t num_rows;
     Pager* pager;
 } Table;
+
+typedef struct {
+    Table* table;
+    uint32_t row_num;
+    bool end_of_table;
+} Cursor;
 
 typedef enum {
     STATEMENT_INSERT,

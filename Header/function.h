@@ -22,10 +22,13 @@ void* get_page(Pager*, uint32_t);
 void pager_flush(Pager*, uint32_t, uint32_t);
 void serialize_row(Row*, void*);
 void deserialize_row(void*, Row*);
-void* row_slot(Table*, uint32_t);
+void* cursor_value(Cursor*);
+void cursor_advance(Cursor*);
 Pager* pager_open(const char *);
 Table* db_open(const char *);
 void db_close(Table*);
+Cursor* table_start(Table*);
+Cursor* table_end(Table*);
 
 
 
