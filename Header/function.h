@@ -4,7 +4,6 @@
 
 #ifndef FUNCTION_H
 #define FUNCTION_H
-#include <stdio.h>
 #include "type.h"
 
 ssize_t my_getline(char **, size_t *, FILE *);
@@ -19,11 +18,14 @@ void close_input_buffer(InputBuffer*);
 ExecuteResult execute_insert(Statement*, Table*);
 ExecuteResult execute_select(Statement*, Table*);
 ExecuteResult execute_statement(Statement*, Table*);
+void* get_page(Pager*, uint32_t);
+void pager_flush(Pager*, uint32_t, uint32_t);
 void serialize_row(Row*, void*);
 void deserialize_row(void*, Row*);
 void* row_slot(Table*, uint32_t);
-Table* new_table();
-void free_table(Table*);
+Pager* pager_open(const char *);
+Table* db_open(const char *);
+void db_close(Table*);
 
 
 
