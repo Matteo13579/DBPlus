@@ -21,6 +21,13 @@ describe 'database' do
         end
     end
 
+    def recreate_exe()
+        if File.exist?("db")
+            File.delete("db")
+            IO.popen("make")
+        end  
+    end
+
     def run_script(commands)
         raw_output = nil
         IO.popen("./db test.db", "r+") do |pipe|
@@ -104,11 +111,44 @@ describe 'database' do
         expect(result2).to eq(["#{db_prompt}(1, user1, person1@example.com)", "#{executed_success}", "#{db_prompt + connection_close}"])
     end
 
-    # =begin
-    #  TODO
-    #
-    #  Rivedere meglio gli output dei test per far si che 
-    #  non si creino problemi nella test suite finale
-    #
-    # =end
+    it 'prints constants' do 
+            script = [
+                ".constants",
+                ".exit",
+            ]
+            result = run_script(script)
+
+            expect(result).to eq([
+                "#{db_prompt}Constants:",
+                "ROW_SIZE: 293",
+                "COMMON_NODE_HEADER_SIZE: 6",
+                "LEAF_NODE_HEADER_SIZE: 10",
+                "LEAF_NODE_CELL_SIZE: 297",
+                "LEAF_NODE_SPACE_FOR_CELLS: 4086",
+                "LEAF_NODE_MAX_CELLS: 13",
+                "#{db_prompt + connection_close}",
+            ])
+    end
+
+    it 'allows printing out the structure of a one-node btree' do
+        check_db_existence()
+        script = [3, 1, 2].map do |i|
+          "insert #{i} user#{i} person#{i}@example.com"
+        end
+        script << ".btree"
+        script << ".exit"
+        result = run_script(script)
+
+        expect(result).to eq([
+            "#{db_prompt + executed_success}",
+            "#{db_prompt + executed_success}",
+            "#{db_prompt + executed_success}",
+            "#{db_prompt}Tree:",
+            "Leaf (size 3)",
+            "  - 0 : 3",
+            "  - 1 : 1",
+            "  - 2 : 2",
+            "#{db_prompt + connection_close}",
+        ])
+    end
 end

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Header/function.h"
+#include "../Header/function.h"
 
 int main(int argc, char *argv[]) {
 

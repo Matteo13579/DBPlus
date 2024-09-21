@@ -6,8 +6,8 @@ SRC_DIR = Source
 HEADER_DIR = Header
 
 # File sorgenti e header
-SRCS = db.c $(SRC_DIR)/function.c $(SRC_DIR)/type.c
-HEADERS = $(HEADER_DIR)/function.h $(HEADER_DIR)/type.h
+SRCS = db.c $(SRC_DIR)/function.c $(SRC_DIR)/constants.c
+HEADERS = $(HEADER_DIR)/function.h $(HEADER_DIR)/type.h $(HEADER_DIR)/constants.h
 
 # Compilatore e flag
 CC = gcc
