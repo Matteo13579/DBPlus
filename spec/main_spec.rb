@@ -10,12 +10,13 @@ describe 'database' do
     table_full = "Table full."
     string_too_long = "String is too long."
     id_negative = "ID must be positive."
+    duplicate_key = "Duplicate key."
 
     def check_db_existence()
         if File.exist?("test.db")
             File.delete("test.db")  
 
-            puts "DB removed.\n"
+            puts "\nDB removed.\n"
         else
             puts "DB not existing.\n"
         end
@@ -141,14 +142,34 @@ describe 'database' do
 
         expect(result).to eq([
             "#{db_prompt + executed_success}",
-            "#{db_prompt + executed_success}",
-            "#{db_prompt + executed_success}",
+            "#{db_prompt}Inserting key: 1 at position: 0",
+            "#{executed_success}",
+            "#{db_prompt}Inserting key: 2 at position: 1",
+            "#{executed_success}",
             "#{db_prompt}Tree:",
             "Leaf (size 3)",
-            "  - 0 : 3",
-            "  - 1 : 1",
-            "  - 2 : 2",
+            "  - 0 : 1",
+            "  - 1 : 2",
+            "  - 2 : 3",
             "#{db_prompt + connection_close}",
+        ])
+    end
+
+    it 'prints an error message if there is a duplicate id' do
+        check_db_existence()
+        script = [
+            "insert 1 user1 person1@example.com",
+            "insert 1 user1 person1@example.com",
+            "select",
+            ".exit",
+        ]
+        result = run_script(script)
+        expect(result).to eq([
+            "#{db_prompt + executed_success}",
+            "#{db_prompt + duplicate_key}",
+            "#{db_prompt}(1, user1, person1@example.com)",
+            "#{executed_success}",
+            "#{db_prompt + connection_close}"
         ])
     end
 end

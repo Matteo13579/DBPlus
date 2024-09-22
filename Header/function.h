@@ -13,6 +13,11 @@ uint32_t* leaf_node_num_cells(void*);
 void* leaf_node_cell(void*, uint32_t);
 uint32_t* leaf_node_key(void*, uint32_t);
 void* leaf_node_value(void*, uint32_t);
+
+Cursor* leaf_node_find(Table*, uint32_t, uint32_t);
+NodeType get_node_type(void*);
+void set_node_type(void*, NodeType);
+
 void print_constants();
 void print_leaf_node(void*);
 void serialize_row(Row*, void*);
@@ -20,7 +25,7 @@ void deserialize_row(void*, Row*);
 void initialize_leaf_node(void*);
 void* get_page(Pager*, uint32_t);
 Cursor* table_start(Table*);
-Cursor* table_end(Table*);
+Cursor* table_find(Table*, uint32_t);
 void* cursor_value(Cursor*);
 void cursor_advance(Cursor*);
 Pager* pager_open(const char *);
